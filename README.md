@@ -7,7 +7,7 @@
 #### Game design patterns simple road map
 1. Command pattern
 
-Implementing a generic Command class from which is inherited a specific action 
+Implementation of a generic Command class from which is inherited a specific action 
 command, like fireCommand, jumpCommand, so that when a specific command have to
 be called, it can be called through parent class. This approach is way more 
 flexible, than hard coding some specific commands in for example button handlers.
@@ -57,5 +57,47 @@ void InputHandler::handleInput()
 ```
 For more details, refer to the [book chapter on Command design pattern](http://gameprogrammingpatterns.com/command.html)
 
-2. asdf dsaf
+2. Flyweight pattern
+
+Data for an object is separated into two kinds:
+* specific for an instance
+* not specific for an instance
+
+This second kind is then shared among multiple objects to save on memory and 
+CPU / GPU cycles when rendering loading etc.
+
+Example use cases:
+- Rendering a tree to a scene, not every tree has to have reserved in memory 
+tree model, but rather pointer to a tree model that is shared between instances
+- Reusability 
+- Memory saving 
+- Performance improvement
+- Making objects more "ligtweight"
+
+Example:
+```cpp
+class TreeModel
+{
+private:
+  Mesh mesh_;
+  Texture bark_;
+  Texture leaves_;
+};
+
+class Tree
+{
+private:
+  TreeModel* model_;
+
+  Vector position_;
+  double height_;
+  double thickness_;
+  Color barkTint_;
+  Color leafTint_;
+};
+
+```
+
+For more details, refer to the [book chapter on Flyweight design pattern](http://gameprogrammingpatterns.com/flyweight.html)
+
 3. dsfasdf
