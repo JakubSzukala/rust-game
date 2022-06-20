@@ -1,11 +1,22 @@
 use bevy::prelude::*;
 
+mod player;
+use player::spawn_player;
+use player::Health;
+
 fn main() {
     App::new()
-    .add_system(hello_world)
+    .add_plugins(DefaultPlugins)
+    .add_startup_system(spawn_player)
+    .add_system(display_players_hp)
     .run();
 }
 
-fn hello_world() {
-    println!("hello world!");
+/// Temp function to test if querying works, TODO: remove later
+fn display_players_hp(query: Query<(Entity, &Health)>) {
+    info!("hi from query"); 
+    for (id, health) in query.iter() {
+        info!("Entity with id: {} has {} HP.", id.id(), health.0) 
+    }
 }
+
