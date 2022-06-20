@@ -1,16 +1,16 @@
 use bevy::{
     prelude::*,
-    window::ReceivedCharacter
 };
 
 
 mod input;
+use input::InputHandlerPlugin;
 
 fn main() {
     App::new()
-    .add_system(hello_world)
+    //.add_system(hello_world)
     .add_plugins(DefaultPlugins)
-    .add_system(input_handler_wrapper)
+    .add_plugin(InputHandlerPlugin)
     .run();
 }
 
