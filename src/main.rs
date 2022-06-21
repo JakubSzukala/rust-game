@@ -15,7 +15,7 @@ fn main() {
     .add_plugins(DefaultPlugins)
     .add_plugin(InputHandlerPlugin)
     .add_startup_system(spawn_player)
-    .add_system(display_players_hp)
+    //.add_system(display_players_hp)
     .run();
 }
 
