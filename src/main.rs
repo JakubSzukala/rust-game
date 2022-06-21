@@ -1,4 +1,10 @@
-use bevy::prelude::*;
+use bevy::{
+    prelude::*,
+};
+
+
+mod input;
+use input::InputHandlerPlugin;
 
 mod player;
 use player::spawn_player;
@@ -7,6 +13,7 @@ use player::Health;
 fn main() {
     App::new()
     .add_plugins(DefaultPlugins)
+    .add_plugin(InputHandlerPlugin)
     .add_startup_system(spawn_player)
     .add_system(display_players_hp)
     .run();
