@@ -12,9 +12,9 @@ pub struct Player;  // empty struct is just a marker for easy extraction
 
 #[derive(Component)]
 pub struct Combo {
-    valid_combos: HashMap<String, String>, // Mapping combo -> attack trait
+    pub valid_combos: HashMap<String, String>, // Mapping combo -> attack trait
     pub combo_input_timer: Timer, // Counter for clearing the combo_sequence
-    combo_sequence: String // Accumulation of user input in time < timeout
+    pub combo_sequence: String // Accumulation of user input in time < timeout
 }
 impl Combo {
     // TODO: Remove hard coded combos sequences

@@ -57,14 +57,33 @@ fn player_mv_input_system(
 
 fn player_combo_input_system(
     keyboard_input: Res<Input<KeyCode>>,
+    mut p: Query<(&Player, &mut Combo)>,
     time: Res<Time>,
     ) {
-    if keyboard_input.pressed(KeyCode::J) {
-        info!("Pressed J");
+    let (_, mut combo) = p.single_mut();
+    
+    // tick the timer
+    combo.combo_input_timer.tick(time.delta());    
+
+    if combo.combo_input_timer.finished() {
+        match combo.valid_combos.get(&combo.combo_sequence) {
+            Some(value) => info!("Casting a spel: {} from combo: {}.",
+                                 value, combo.combo_sequence),
+            None        => ()
+        };
+        combo.combo_sequence = String::from("");
+    }
+
+    if keyboard_input.just_pressed(KeyCode::J) {
+        info!("Registered J press.");
+        combo.combo_sequence.push('j');
+        combo.combo_input_timer.reset();
     }
     
-    if keyboard_input.pressed(KeyCode::K) {
-        info!("Pressed K");
+    if keyboard_input.just_pressed(KeyCode::K) {
+        info!("Registered K press.");
+        combo.combo_sequence.push('k');
+        combo.combo_input_timer.reset();
     }
 }
 
