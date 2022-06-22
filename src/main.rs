@@ -10,10 +10,14 @@ mod player;
 use player::spawn_player;
 use player::Health;
 
+mod user_interface;
+use user_interface::UIPlugin;
+
 fn main() {
     App::new()
     .add_plugins(DefaultPlugins)
     .add_plugin(InputHandlerPlugin)
+    .add_plugin(UIPlugin)
     .add_startup_system(spawn_player)
     //.add_system(display_players_hp)
     .run();
