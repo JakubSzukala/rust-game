@@ -5,7 +5,6 @@
  */
 
 use bevy::{
-    input::{keyboard::KeyCode, Input},
     prelude::*,
 };
 
@@ -28,9 +27,9 @@ impl Plugin for InputHandlerPlugin {
 // TODO: split this
 fn player_mv_input_system(
     keyboard_input: Res<Input<KeyCode>>,
-    p: Query<(&Player, &MovementSpeed)>,
+    p: Query<&MovementSpeed, With<Player>>,
     ) {
-    let (_, ms) = p.single(); // on fail, panics
+    let ms = p.single(); // on fail, panics
     
     // Movement 
     if keyboard_input.pressed(KeyCode::W) {
@@ -57,17 +56,17 @@ fn player_mv_input_system(
 
 fn player_combo_input_system(
     keyboard_input: Res<Input<KeyCode>>,
-    mut p: Query<(&Player, &mut Combo)>,
+    mut p: Query<&mut Combo, With<Player>>,
     time: Res<Time>,
     ) {
-    let (_, mut combo) = p.single_mut();
+    let mut combo = p.single_mut();
     
     // tick the timer
     combo.combo_input_timer.tick(time.delta());    
 
     if combo.combo_input_timer.finished() {
         match combo.valid_combos.get(&combo.combo_sequence) {
-            Some(value) => info!("Casting a spel: {} from combo: {}.",
+            Some(value) => info!("Casting a spell: {} from combo: {}.",
                                  value, combo.combo_sequence),
             None        => ()
         };
