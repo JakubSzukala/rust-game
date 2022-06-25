@@ -13,7 +13,7 @@ use user_interface::UIPlugin;
 fn main() {
     App::new()
     .insert_resource(WindowDescriptor {
-            title: "I am a window!".to_string(),
+            title: "Rust Game".to_string(),
             width: 500.,
             height: 300.,
             ..default()
