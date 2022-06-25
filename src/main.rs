@@ -26,11 +26,5 @@ fn main() {
     .run();
 }
 
-/// Temp function to test if querying works, TODO: remove later
-fn display_players_hp(query: Query<(Entity, &Health)>) {
-    info!("hi from query"); 
-    for (id, health) in query.iter() {
-        info!("Entity with id: {} has {} HP.", id.id(), health.0) 
-    }
-}
+
 
