@@ -87,6 +87,52 @@ fn player_combo_input_system(
 }
 
 
+#[cfg(test)]
+mod tests {
+    // Use both bevy and all functions in this file 
+    use bevy::prelude::*;
+    use super::*;
+
+    // example test cases:
+    // buffer insert if successfull DONE
+    // combo picking if successfull
+    // timeout and clearing the buffer
+
+    #[test]
+    fn check_adding_to_combo_buffer() {
+        // Setup app with tested system and min plugins (necessary time res)
+        let mut app = App::new();
+        app
+            .add_system(player_combo_input_system)
+            .add_plugins(MinimalPlugins);
+
+        // Setup the entity that will be queried
+        let combo_id = app.world.spawn()
+            .insert(Combo::new(1))
+            .insert(Player)
+            .id();
+
+        // Setup the keyboard input resource 
+        let mut input = Input::<KeyCode>::default();
+        input.press(KeyCode::J); 
+        app.insert_resource(input);
+
+        // Run systems
+        app.update();
+        
+        // Lookup the combo_sequence and check if it is correct
+        let res = app.world.query::<&Combo>().get(&app.world, combo_id);
+        match res {
+            Ok(combo) => {
+                assert_eq!(combo.combo_sequence, "j");
+            }
+            Err(combo) => {
+                panic!("Combo_sequence after 1 J key press is not correct: {}.", 
+                       combo)
+            }
+        }
+    }
+}
 
 
 

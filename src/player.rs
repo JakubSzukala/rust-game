@@ -18,7 +18,7 @@ pub struct Combo {
 }
 impl Combo {
     // TODO: Remove hard coded combos sequences
-    fn new(timeout: u64) -> Combo {
+    pub fn new(timeout: u64) -> Combo {
         Combo {
             valid_combos: HashMap::from([
                 (String::from("jjjj"), String::from("FireBall")),
