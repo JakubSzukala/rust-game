@@ -63,8 +63,9 @@ fn player_combo_input_system(
     
     // tick the timer
     combo.combo_input_timer.tick(time.delta());    
-
+    println!("Time since startup: {}", time.time_since_startup().as_secs_f64());
     if combo.combo_input_timer.finished() {
+        println!("Timer finished.");
         match combo.valid_combos.get(&combo.combo_sequence) {
             Some(value) => info!("Casting a spell: {} from combo: {}.",
                                  value, combo.combo_sequence),
@@ -92,10 +93,10 @@ mod tests {
     // Use both bevy and all functions in this file 
     use bevy::prelude::*;
     use super::*;
-
+    use std::{thread, time};
     // example test cases:
     // buffer insert if successfull DONE
-    // combo picking if successfull
+    // combo picking if correct / incorrect combos
     // timeout and clearing the buffer
 
     #[test]
@@ -126,14 +127,63 @@ mod tests {
             Ok(combo) => {
                 assert_eq!(combo.combo_sequence, "j");
             }
-            Err(combo) => {
+            Err(err) => {
                 panic!("Combo_sequence after 1 J key press is not correct: {}.", 
-                       combo)
+                       err)
+            }
+        }
+    }
+
+    #[test]
+    fn check_combo_buffer_handling() {
+        let mut app = App::new(); 
+        app
+            .add_system(player_combo_input_system)
+            .add_plugins(MinimalPlugins);
+
+        let combo_id = app.world.spawn()
+            .insert(Combo::new(1))
+            .insert(Player)
+            .id();
+        
+        // Initialize resources - key press and time for timeouts
+        let mut input = Input::<KeyCode>::default();
+        input.press(KeyCode::K);
+        let time = Time::default();
+        app
+            .insert_resource(input)
+            .insert_resource(time);
+
+        app.update();
+        
+        // Check single key press
+        let res = app.world.query::<&Combo>().get(&app.world, combo_id);
+        match res {
+            Ok(combo) => assert_eq!(combo.combo_sequence, "k"),
+            Err(err) => panic!("Combo sequence after 1 K key press is not correct {}", err)
+        }
+        
+        // Clear the inputs (or they will be read again in next app.update())
+        app.world.resource_mut::<Input<KeyCode>>().clear();
+        
+        // Check timeout reaction and if timer elapses 
+        let timeout = time::Duration::from_secs(2);
+        thread::sleep(timeout);
+        app.update();
+
+        let res = app.world.query::<&Combo>().get(&app.world, combo_id);
+        match res {
+            Ok(combo) => {
+                let secs = combo.combo_input_timer.elapsed().as_secs_f64();
+                assert!(secs == 1.0); // Timer freezes until reset after elapse
+                assert_eq!(combo.combo_sequence, "");
+            }
+            Err(err) => {
+                panic!("Panicked due to: {}", err.to_string())
             }
         }
     }
 }
-
 
 
 
