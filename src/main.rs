@@ -9,6 +9,9 @@ use player::spawn_player;
 mod user_interface;
 use user_interface::UIPlugin;
 
+mod level_builder;
+use level_builder::spawn_level;
+
 fn main() {
     App::new()
     .insert_resource(WindowDescriptor {
@@ -20,6 +23,7 @@ fn main() {
     .add_plugins(DefaultPlugins)
     .add_plugin(InputHandlerPlugin)
     .add_plugin(UIPlugin)
+    .add_startup_system(spawn_level)
     .add_startup_system(spawn_player)
     .run();
 }
