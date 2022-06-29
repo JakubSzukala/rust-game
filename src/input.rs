@@ -63,9 +63,7 @@ fn player_combo_input_system(
     
     // tick the timer
     combo.combo_input_timer.tick(time.delta());    
-    println!("Time since startup: {}", time.time_since_startup().as_secs_f64());
     if combo.combo_input_timer.finished() {
-        println!("Timer finished.");
         match combo.valid_combos.get(&combo.combo_sequence) {
             Some(value) => info!("Casting a spell: {} from combo: {}.",
                                  value, combo.combo_sequence),
@@ -97,7 +95,7 @@ mod tests {
     // example test cases:
     // buffer insert if successfull DONE
     // combo picking if correct / incorrect combos
-    // timeout and clearing the buffer
+    // timeout and clearing the buffer DONE
 
     #[test]
     fn check_adding_to_combo_buffer() {
@@ -175,7 +173,7 @@ mod tests {
         match res {
             Ok(combo) => {
                 let secs = combo.combo_input_timer.elapsed().as_secs_f64();
-                assert!(secs == 1.0); // Timer freezes until reset after elapse
+                assert_eq!(secs, 1.0); // Timer freezes until reset after elapse
                 assert_eq!(combo.combo_sequence, "");
             }
             Err(err) => {
