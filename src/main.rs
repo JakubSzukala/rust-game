@@ -13,8 +13,8 @@ fn main() {
     App::new()
     .insert_resource(WindowDescriptor {
             title: "Rust Game".to_string(),
-            width: 500.,
-            height: 300.,
+            width: 800.,
+            height: 600.,
             ..default()
     })
     .add_plugins(DefaultPlugins)

@@ -26,30 +26,27 @@ impl Plugin for InputHandlerPlugin {
 // Or "interactable" obj should have a mark or smth?
 // TODO: split this
 fn player_mv_input_system(
+    time: Res<Time>,
     keyboard_input: Res<Input<KeyCode>>,
-    p: Query<&MovementSpeed, With<Player>>,
+    mut player_transform: Query<&mut Transform, With<Player>>,
     ) {
-    let ms = p.single(); // on fail, panics
+    let mut t = player_transform.single_mut();
     
     // Movement 
     if keyboard_input.pressed(KeyCode::W) {
-        info!("Pressed W -> Walking forward with v = {}", 
-              ms.0);
+        t.translation.z += 1.0*time.delta().as_secs_f32();
     }
 
     if keyboard_input.pressed(KeyCode::S) {
-        info!("Pressed S -> Walking backward with v = {}",
-              ms.0);
+        t.translation.z -= 1.0*time.delta().as_secs_f32();
     }
     
     if keyboard_input.pressed(KeyCode::A) {
-        info!("Pressed A -> Walking left with v = {}", 
-              ms.0);
+        t.translation.x += 1.0*time.delta().as_secs_f32();
     }
 
     if keyboard_input.pressed(KeyCode::D) {
-        info!("Pressed D -> Walking right with v = {}",
-              ms.0);
+        t.translation.x -= 1.0*time.delta().as_secs_f32();
     }
 }
 
