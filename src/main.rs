@@ -4,7 +4,7 @@ mod input;
 use input::InputHandlerPlugin;
 
 mod player;
-use player::spawn_player;
+use player::PlayerSetupPlugin;
 
 mod user_interface;
 use user_interface::UIPlugin;
@@ -20,7 +20,7 @@ fn main() {
     .add_plugins(DefaultPlugins)
     .add_plugin(InputHandlerPlugin)
     .add_plugin(UIPlugin)
-    .add_startup_system(spawn_player)
+    .add_plugin(PlayerSetupPlugin)
     .run();
 }
 

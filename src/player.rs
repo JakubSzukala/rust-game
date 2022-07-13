@@ -6,6 +6,15 @@ use std::time::Duration;
 
 // Components constituting to a player, change it into bundle?
 
+pub struct PlayerSetupPlugin;
+impl Plugin for PlayerSetupPlugin {
+    fn build(&self, app: &mut App) {
+        info!("Hi from app, seting up player systems");
+        app.add_startup_system(spawn_player);
+        app.add_startup_system(spawn_camera);
+    }
+}
+
 // BEGIN Player components
 #[derive(Component)]
 pub struct Player;  // empty struct is just a marker for easy extraction
@@ -41,7 +50,7 @@ pub struct MovementSpeed(pub f32);
 // END Player components
 
 /// Create a Player entity and set up it's components
-pub fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
+fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     let player_entity_id = commands.spawn().id();
     
     commands.entity(player_entity_id)
