@@ -11,6 +11,9 @@ use std::time::Duration;
 pub struct Player;  // empty struct is just a marker for easy extraction
 
 #[derive(Component)]
+pub struct PlayerCamera;
+
+#[derive(Component)]
 pub struct Combo {
     pub valid_combos: HashMap<String, String>, // Mapping combo -> attack trait
     pub combo_input_timer: Timer, // Counter for clearing the combo_sequence
@@ -50,13 +53,20 @@ pub fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
         .with_children(|parent| {
             parent.spawn_scene(asset_server.load("models/player.glb#Scene0"));
         });
-    commands.spawn_bundle(PerspectiveCameraBundle {
-        transform: Transform::from_xyz(0.0, 10.7, -10.0).looking_at(Vec3::new(0.0, 0.3, 0.0), Vec3::Y),
-        ..default()
-    });
 
+    spawn_camera(commands);
 
     info!("Created a player.");
 }
 
+fn spawn_camera(mut commands: Commands){
+    let camera_entity_id = commands.spawn().id();
+    commands.entity(camera_entity_id)
+        .insert(PlayerCamera)
+        .insert_bundle(PerspectiveCameraBundle {
+        transform: Transform::from_xyz(0.0, 10.7, -10.0).looking_at(Vec3::new(0.0, 0.3, 0.0), Vec3::Y),
+        ..default()
+    });
+
+}
 
