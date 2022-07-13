@@ -6,9 +6,21 @@ use std::time::Duration;
 
 // Components constituting to a player, change it into bundle?
 
+pub struct PlayerSetupPlugin;
+impl Plugin for PlayerSetupPlugin {
+    fn build(&self, app: &mut App) {
+        info!("Hi from app, seting up player systems");
+        app.add_startup_system(spawn_player);
+        app.add_startup_system(spawn_camera);
+    }
+}
+
 // BEGIN Player components
 #[derive(Component)]
 pub struct Player;  // empty struct is just a marker for easy extraction
+
+#[derive(Component)]
+pub struct PlayerCamera;
 
 #[derive(Component)]
 pub struct Combo {
@@ -38,16 +50,32 @@ pub struct MovementSpeed(pub f32);
 // END Player components
 
 /// Create a Player entity and set up it's components
-pub fn spawn_player(mut commands: Commands) {
+fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     let player_entity_id = commands.spawn().id();
     
     commands.entity(player_entity_id)
         .insert(Player)
         .insert(Health(100.0))
         .insert(MovementSpeed(1.0))
-        .insert(Combo::new(1));
+        .insert(Combo::new(1))
+        .insert_bundle(TransformBundle::from(Transform::from_xyz(0.0, 0.0, 0.0)))
+        .with_children(|parent| {
+            parent.spawn_scene(asset_server.load("models/player.glb#Scene0"));
+        });
+
+    spawn_camera(commands);
 
     info!("Created a player.");
 }
 
+fn spawn_camera(mut commands: Commands){
+    let camera_entity_id = commands.spawn().id();
+    commands.entity(camera_entity_id)
+        .insert(PlayerCamera)
+        .insert_bundle(PerspectiveCameraBundle {
+        transform: Transform::from_xyz(0.0, 10.7, -10.0).looking_at(Vec3::new(0.0, 0.3, 0.0), Vec3::Y),
+        ..default()
+    });
+
+}
 

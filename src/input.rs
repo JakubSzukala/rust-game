@@ -9,7 +9,7 @@ use bevy::{
 };
 
 use crate::player::Player;
-use crate::player::MovementSpeed;
+use crate::player::PlayerCamera;
 use crate::player::Combo;
 
 pub struct InputHandlerPlugin;
@@ -26,30 +26,35 @@ impl Plugin for InputHandlerPlugin {
 // Or "interactable" obj should have a mark or smth?
 // TODO: split this
 fn player_mv_input_system(
+    time: Res<Time>,
     keyboard_input: Res<Input<KeyCode>>,
-    p: Query<&MovementSpeed, With<Player>>,
-    ) {
-    let ms = p.single(); // on fail, panics
-    
+    mut set: ParamSet<(
+        Query<&mut Transform, With<Player>>,
+        Query<&mut Transform, With<PlayerCamera>>,
+    )>,
+){
+    let mut movement_vector: Vec3 = Vec3::ZERO;
     // Movement 
     if keyboard_input.pressed(KeyCode::W) {
-        info!("Pressed W -> Walking forward with v = {}", 
-              ms.0);
+        movement_vector.z = 1.0*time.delta_seconds();
     }
 
     if keyboard_input.pressed(KeyCode::S) {
-        info!("Pressed S -> Walking backward with v = {}",
-              ms.0);
+        movement_vector.z = -1.0*time.delta_seconds();
     }
     
     if keyboard_input.pressed(KeyCode::A) {
-        info!("Pressed A -> Walking left with v = {}", 
-              ms.0);
+        movement_vector.x = 1.0*time.delta_seconds();
     }
 
     if keyboard_input.pressed(KeyCode::D) {
-        info!("Pressed D -> Walking right with v = {}",
-              ms.0);
+        movement_vector.x = -1.0*time.delta_seconds();
+    }
+    for mut t in set.p0().iter_mut() {
+        t.translation += movement_vector;
+    }
+    for mut t in set.p1().iter_mut() {
+        t.translation += movement_vector;
     }
 }
 
