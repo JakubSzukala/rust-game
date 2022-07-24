@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 bevy = { version = "0.7", features = ["dynamic"]} # make sure this is the latest version
+bevy_rapier3d = { version = "0.15.0", features = [ "debug-render" ] }
