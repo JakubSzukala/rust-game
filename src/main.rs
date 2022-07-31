@@ -10,8 +10,8 @@ use player::PlayerSetupPlugin;
 mod user_interface;
 use user_interface::UIPlugin;
 
-mod map;
-use map::MapLoadPlugin;
+mod level;
+use level::LevelLoadPlugin;
 
 fn main() {
     App::new()
@@ -27,6 +27,6 @@ fn main() {
     .add_plugin(InputHandlerPlugin)
     .add_plugin(UIPlugin)
     .add_plugin(PlayerSetupPlugin)
-    .add_plugin(MapLoadPlugin)
+    .add_plugin(LevelLoadPlugin)
     .run();
 }
