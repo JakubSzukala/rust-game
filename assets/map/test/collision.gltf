@@ -1,0 +1,86 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v3.2.43",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Mesh",
+            "scale" : [
+                4,
+                1,
+                0.4000000059604645
+            ],
+            "translation" : [
+                0,
+                0.5199999809265137,
+                -3.5999999046325684
+            ]
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Collider",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0
+                    },
+                    "indices" : 1
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 68,
+            "max" : [
+                1.0000001192092896,
+                1,
+                19
+            ],
+            "min" : [
+                -1.0000001192092896,
+                -1,
+                -1
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5123,
+            "count" : 102,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 816,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 204,
+            "byteOffset" : 816
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 1020,
+            "uri" : "collision.bin"
+        }
+    ]
+}
