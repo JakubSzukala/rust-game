@@ -50,7 +50,7 @@ pub struct MovementSpeed(pub f32);
 // END Player components
 
 /// Create a Player entity and set up it's components
-fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     let player_entity_id = commands.spawn().id();
     
     commands.entity(player_entity_id)
@@ -68,7 +68,7 @@ fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     info!("Created a player.");
 }
 
-fn spawn_camera(mut commands: Commands){
+pub fn spawn_camera(mut commands: Commands){
     let camera_entity_id = commands.spawn().id();
     commands.entity(camera_entity_id)
         .insert(PlayerCamera)
