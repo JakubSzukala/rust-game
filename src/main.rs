@@ -13,6 +13,9 @@ use user_interface::UIPlugin;
 mod level;
 use level::LevelLoadPlugin;
 
+pub mod enemies;
+use enemies::EnemiesPlugin;
+
 fn main() {
     App::new()
     .insert_resource(WindowDescriptor {
@@ -28,5 +31,6 @@ fn main() {
     .add_plugin(UIPlugin)
     .add_plugin(PlayerSetupPlugin)
     .add_plugin(LevelLoadPlugin)
+    .add_plugin(EnemiesPlugin)
     .run();
 }

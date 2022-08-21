@@ -1,11 +1,16 @@
 use bevy::{
     prelude::*,
 };
+
+#[path = "./creature.rs"]
+mod creature;
+pub use creature::Health;
+pub use creature::MovementSpeed;
+
 use std::collections::HashMap;
 use std::time::Duration;
 
 // Components constituting to a player, change it into bundle?
-
 pub struct PlayerSetupPlugin;
 impl Plugin for PlayerSetupPlugin {
     fn build(&self, app: &mut App) {
@@ -28,6 +33,7 @@ pub struct Combo {
     pub combo_input_timer: Timer, // Counter for clearing the combo_sequence
     pub combo_sequence: String // Accumulation of user input in time < timeout
 }
+
 impl Combo {
     // TODO: Remove hard coded combos sequences
     pub fn new(timeout: u64) -> Combo {
@@ -42,11 +48,6 @@ impl Combo {
     }
 }
 
-#[derive(Component)]
-pub struct Health(pub f32);
-    
-#[derive(Component)]
-pub struct MovementSpeed(pub f32);
 // END Player components
 
 /// Create a Player entity and set up it's components
