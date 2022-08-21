@@ -6,9 +6,9 @@ mod creature;
 pub mod worm;
 pub mod rock;
 
-use creature::Health;
+//use creature::{Health, BasicAD, MovementSpeed};
 
-use self::worm::worm_attack;
+//use self::worm::{worm_attack, worm_move};
 use self::rock::{rock_attack, rock_move};
 
 pub struct EnemiesPlugin;
@@ -22,3 +22,10 @@ impl Plugin for EnemiesPlugin {
             .add_system(rock_move);
     }
 }
+
+trait EnemyTraits { // TODO: add a model handle or something
+    fn spawn(commands: &mut Commands, transform: Transform, asset_server: Res<AssetServer>) -> Entity;
+}
+
+
+
