@@ -29,28 +29,26 @@ impl EnemyTraits for RockEnemy {
             })
             .id()
     }
-}
 
-
-pub fn rock_follow_player(
-    mut rock_q: Query<(&mut Transform, &MovementSpeed), With<RockEnemy>>,
-    player_q: Query<&Transform, With<Player>>,
-    time: Res<Time>
-    ) {
-    let player_pos = player_q.single(); 
-    for (mut rock_transform, ms) in rock_q.iter_mut() {
-        // TODO: Use some A* or smth
-        let move_transform = rock_transform.looking_at(
-            player_pos.translation,
-            Vec3::Y);
-        rock_transform.translation += 
-            move_transform.translation // direction 
-            * ms.0                     // movement spped
-            * time.delta_seconds();    // delta
-        println!("Rock at {:?}", rock_transform.translation);
+    fn follow_player(
+        mut rock_q: Query<(&mut Transform, &MovementSpeed), With<RockEnemy>>,
+        player_q: Query<&Transform, With<Player>>,
+        time: Res<Time>
+        ) {
+        let player_pos = player_q.single(); 
+        for (mut rock_transform, ms) in rock_q.iter_mut() {
+            // TODO: Use some A* or smth
+            let move_transform = rock_transform.looking_at(
+                player_pos.translation,
+                Vec3::Y);
+            rock_transform.translation += 
+                move_transform.translation // direction 
+                * ms.0                     // movement spped
+                * time.delta_seconds();    // delta
+            println!("Rock at {:?}", rock_transform.translation);
+        }
     }
 }
-
 
 
 

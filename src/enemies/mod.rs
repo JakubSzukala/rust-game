@@ -2,39 +2,55 @@ use bevy::prelude::*;
 
 #[path = "../creature.rs"]
 mod creature;
+use creature::MovementSpeed;
 
 pub mod worm;
 pub mod rock;
 
-use self::rock::{RockEnemy, rock_follow_player};
+use crate::player::Player;
 
-pub struct EnemiesPlugin;
+//use self::rock::{RockEnemy};
 
-impl Plugin for EnemiesPlugin {
+#[derive(Component)]
+pub struct Enemy;
+
+pub struct EnemyActionsPlugin<T: EnemyActions>;
+// Implement Plugin trait on any EnemyActionsPlugin type that implements EnemyActions trait
+// Conditional impl
+impl<T: EnemyActions> Plugin for EnemyActionsPlugin<T> {
     fn build(&self, app: &mut App) {
         app
-            .add_system(rock_follow_player)
-            .add_startup_system(RockEnemy::<spawn>);
-        // TODO !!!!!!!!!!!!!!!!!!!!
-        // Use this as example on how to implement EnemiesPlugin to use traits
-        // for attack, move etc
-        // https://github.com/bevyengine/bevy/blob/main/crates/bevy_render/src/camera/projection.rs
-        // https://bevy-cheatbook.github.io/cookbook/custom-projection.html
-        // https://bevy-cheatbook.github.io/patterns/generic-systems.html
+            .add_system(T::follow_player)
+            .add_startup_system(T::spawn);
     }
 }
 
-trait EnemyTraits { 
+trait EnemyActions {
     fn spawn(
         commands: &mut Commands,
         transform: Transform,
         asset_server: Res<AssetServer>) -> Entity;
+    fn follow_player(
+        enemy_q: Query<(&Transform, &MovementSpeed), With<Enemy>>,
+        player_q: Query<&Transform, With<Player>>);
 }
 
+#[derive(Component)]
+pub struct SomeEnem;
 
-fn spawn_enemies() {
-    RockEnemy::spawn();
+impl EnemyActions for SomeEnem {
+    fn spawn(
+        commands: &mut Commands,
+        transform: Transform,
+        asset_server: Res<AssetServer>) -> Entity {
+        println!("hi spawn here");
+    }
+    fn follow_player(
+        enemy_q: Query<(&Transform, &MovementSpeed), With<Enemy>>,
+        player_q: Query<&Transform, With<Player>>) {
+        println!("Hi following here");
+    }
+
 }
-
 
 

@@ -14,7 +14,8 @@ mod level;
 use level::LevelLoadPlugin;
 
 pub mod enemies;
-use enemies::EnemiesPlugin;
+use enemies::EnemyActionsPlugin;
+use enemies::SomeEnem;
 
 fn main() {
     App::new()
@@ -31,6 +32,6 @@ fn main() {
     .add_plugin(UIPlugin)
     .add_plugin(PlayerSetupPlugin)
     .add_plugin(LevelLoadPlugin)
-    .add_plugin(EnemiesPlugin)
+    .add_plugin(EnemyActionsPlugin::<SomeEnem>)
     .run();
 }
