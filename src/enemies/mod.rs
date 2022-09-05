@@ -3,6 +3,8 @@ use bevy::prelude::*;
 #[path = "../creature.rs"]
 mod creature;
 use creature::MovementSpeed;
+use creature::BasicAD;
+use creature::Health;
 
 pub mod worm;
 pub mod rock;
@@ -16,7 +18,7 @@ pub struct Enemy;
 
 pub struct EnemyActionsPlugin<T: EnemyActions>;
 // Implement Plugin trait on any EnemyActionsPlugin type that implements EnemyActions trait
-// Conditional impl
+// https://doc.rust-lang.org/book/ch10-02-traits.html#using-trait-bounds-to-conditionally-implement-methods
 impl<T: EnemyActions> Plugin for EnemyActionsPlugin<T> {
     fn build(&self, app: &mut App) {
         app
@@ -30,9 +32,13 @@ trait EnemyActions {
         commands: &mut Commands,
         transform: Transform,
         asset_server: Res<AssetServer>) -> Entity;
-    fn follow_player(
+    fn go(
         enemy_q: Query<(&Transform, &MovementSpeed), With<Enemy>>,
         player_q: Query<&Transform, With<Player>>);
+    fn attack(
+        enemy_q: Query<(&Transform, &BasicAD), With<Enemy>>,
+        player_q: Query<(&Transform, &Health), With<Player>>
+        );
 }
 
 #[derive(Component)]
@@ -45,12 +51,17 @@ impl EnemyActions for SomeEnem {
         asset_server: Res<AssetServer>) -> Entity {
         println!("hi spawn here");
     }
-    fn follow_player(
+    fn go(
         enemy_q: Query<(&Transform, &MovementSpeed), With<Enemy>>,
         player_q: Query<&Transform, With<Player>>) {
         println!("Hi following here");
     }
-
+    fn attack(
+        enemy_q: Query<(&Transform, &BasicAD), With<Enemy>>,
+        player_q: Query<(&Transform, &Health), With<Player>>
+        ) {
+        println!("Hi atacking here");
+    }
 }
 
 
