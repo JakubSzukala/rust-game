@@ -1,6 +1,4 @@
-use bevy::{
-    prelude::*,
-};
+use bevy::prelude::*;
 
 #[path = "./creature.rs"]
 mod creature;
@@ -22,7 +20,7 @@ impl Plugin for PlayerSetupPlugin {
 
 // BEGIN Player components
 #[derive(Component)]
-pub struct Player;  // empty struct is just a marker for easy extraction
+pub struct Player; // empty struct is just a marker for easy extraction
 
 #[derive(Component)]
 pub struct PlayerCamera;
@@ -30,8 +28,8 @@ pub struct PlayerCamera;
 #[derive(Component)]
 pub struct Combo {
     pub valid_combos: HashMap<String, String>, // Mapping combo -> attack trait
-    pub combo_input_timer: Timer, // Counter for clearing the combo_sequence
-    pub combo_sequence: String // Accumulation of user input in time < timeout
+    pub combo_input_timer: Timer,              // Counter for clearing the combo_sequence
+    pub combo_sequence: String,                // Accumulation of user input in time < timeout
 }
 
 impl Combo {
@@ -40,10 +38,10 @@ impl Combo {
         Combo {
             valid_combos: HashMap::from([
                 (String::from("jjjj"), String::from("FireBall")),
-                (String::from("kkkk"), String::from("ZaklecieKorwinaMikke"))
+                (String::from("kkkk"), String::from("ZaklecieKorwinaMikke")),
             ]),
             combo_input_timer: Timer::new(Duration::from_secs(timeout), false),
-            combo_sequence: String::from("")
+            combo_sequence: String::from(""),
         }
     }
 }
@@ -53,8 +51,9 @@ impl Combo {
 /// Create a Player entity and set up it's components
 pub fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     let player_entity_id = commands.spawn().id();
-    
-    commands.entity(player_entity_id)
+
+    commands
+        .entity(player_entity_id)
         .insert(Player)
         .insert(Health(100.0))
         .insert(MovementSpeed(1.0))
@@ -69,14 +68,14 @@ pub fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     info!("Created a player.");
 }
 
-pub fn spawn_camera(mut commands: Commands){
+pub fn spawn_camera(mut commands: Commands) {
     let camera_entity_id = commands.spawn().id();
-    commands.entity(camera_entity_id)
+    commands
+        .entity(camera_entity_id)
         .insert(PlayerCamera)
         .insert_bundle(PerspectiveCameraBundle {
-        transform: Transform::from_xyz(0.0, 10.7, -10.0).looking_at(Vec3::new(0.0, 0.3, 0.0), Vec3::Y),
-        ..default()
-    });
-
+            transform: Transform::from_xyz(0.0, 10.7, -10.0)
+                .looking_at(Vec3::new(0.0, 0.3, 0.0), Vec3::Y),
+            ..default()
+        });
 }
-

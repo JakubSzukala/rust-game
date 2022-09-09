@@ -19,19 +19,19 @@ use enemies::SomeEnem;
 
 fn main() {
     App::new()
-    .insert_resource(WindowDescriptor {
+        .insert_resource(WindowDescriptor {
             title: "Rust Game".to_string(),
             width: 800.,
             height: 600.,
             ..default()
-    })
-    .add_plugins(DefaultPlugins) // Bevy plugin
-    .add_plugin(RapierPhysicsPlugin::<NoUserData>::default()) // Rapier plugin
-    .add_plugin(RapierDebugRenderPlugin::default()) // Rapier plugin
-    .add_plugin(InputHandlerPlugin)
-    .add_plugin(UIPlugin)
-    .add_plugin(PlayerSetupPlugin)
-    .add_plugin(LevelLoadPlugin)
-    .add_plugin(EnemyActionsPlugin::<SomeEnem>)
-    .run();
+        })
+        .add_plugins(DefaultPlugins) // Bevy plugin
+        .add_plugin(RapierPhysicsPlugin::<NoUserData>::default()) // Rapier plugin
+        .add_plugin(RapierDebugRenderPlugin::default()) // Rapier plugin
+        .add_plugin(InputHandlerPlugin)
+        .add_plugin(UIPlugin)
+        .add_plugin(PlayerSetupPlugin)
+        .add_plugin(LevelLoadPlugin)
+        .add_plugin(EnemyActionsPlugin::<SomeEnem>)
+        .run();
 }
